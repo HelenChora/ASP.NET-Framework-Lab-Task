@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Labtask4Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Labtask4.dbo.categories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="categories">
+    <Key>
+      <PropertyRef Name="categoryId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="product_id" />
+    </Key>
+    <Property Name="categoryId" Type="int" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="product_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="productId" />
+    </Key>
+    <Property Name="productId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="productName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="price" Type="float" Nullable="false" />
+    <Property Name="catId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_categories_Products">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="categories" Type="Self.categories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="productId" />
+      </Principal>
+      <Dependent Role="categories">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Labtask4ModelStoreContainer">
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="categories" EntityType="Self.categories" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [categories].[categoryId] AS [categoryId], 
+    [categories].[name] AS [name], 
+    [categories].[product_id] AS [product_id]
+    FROM [dbo].[categories] AS [categories]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_categories_Products" Association="Self.FK_categories_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="categories" EntitySet="categories" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
